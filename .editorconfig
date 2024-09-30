@@ -1,0 +1,30 @@
+# EditorConfig é utilizado para manter consistência de codificação em diferentes editores e IDEs.
+# Mais informações: https://editorconfig.org
+
+root = true
+
+# Para todos os arquivos
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Arquivos Markdown, JSON, YAML (ajustes específicos)
+[*.md, *.json, *.yaml, *.yml]
+indent_size = 2
+trim_trailing_whitespace = false
+
+# Para arquivos Makefile
+[Makefile]
+indent_style = tab
+
+# Para arquivos TypeScript
+[*.ts]
+indent_size = 2
+
+# Para arquivos de configuração (Ionic/Vue)
+[*.vue]
+indent_size = 2

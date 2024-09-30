@@ -1,0 +1,2 @@
+# Definir o LF como terminador de linha para todos os arquivos de texto
+* text=auto eol=lf
