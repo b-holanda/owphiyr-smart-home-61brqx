@@ -1,0 +1,8 @@
+{
+  "name": "Owphiyr Smart Home",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite",
+  "id": "776529d0"
+}
