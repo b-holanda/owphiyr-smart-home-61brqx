@@ -21,11 +21,11 @@ module.exports = {
       'error',
       {
         singleQuote: true,
-        semi: true,
+        semi: false, // Remove o ponto e vírgula
         printWidth: 80,
         trailingComma: 'es5',
         arrowParens: 'always',
       },
     ],
   },
-};
+}

@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router';
-import { RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory } from '@ionic/vue-router'
+import { RouteRecordRaw } from 'vue-router'
+import { authenticated, redirectIfAuthenticated } from './guards'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -8,13 +9,39 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/login',
-    component: () => import('@/views/auth/AuthView.vue'),
+    name: 'login',
+    component: () => import('@/views/LoginPage.vue'),
+    beforeEnter: [redirectIfAuthenticated],
   },
-];
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/RegisterPage.vue'),
+    beforeEnter: [redirectIfAuthenticated],
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: () => import('@/views/HomePage.vue'),
+    beforeEnter: [authenticated],
+  },
+  {
+    path: '/verify-email/:token',
+    name: 'verify-email',
+    component: () => import('@/views/EmailVerificationPage.vue'),
+    beforeEnter: [authenticated],
+  },
+  {
+    path: '/not-verified-email',
+    name: 'not-verified-email',
+    component: () => import('@/views/EmailNotVerifiedPage.vue'),
+    beforeEnter: [authenticated],
+  },
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-});
+})
 
-export default router;
+export default router
