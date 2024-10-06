@@ -43,11 +43,17 @@ router.isReady().then(() => {
 })
 
 App.addListener('appUrlOpen', function (event: URLOpenListenerEvent) {
-  const slug = event.url.split('.app').pop()
+  console.debug('event', event)
 
-  if (slug) {
+  const urlParams = new URL(event.url).searchParams
+  const token = urlParams.get('verify_url')
+
+  console.debug('token', token)
+
+  if (token) {
+    console.debug('Redirecting to:', `/verify-email/${token}`)
     router.push({
-      path: slug,
+      path: `/verify-email/${token}`,
     })
   }
 })

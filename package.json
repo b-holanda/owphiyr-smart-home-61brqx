@@ -26,7 +26,9 @@
     "axios": "^1.7.7",
     "ionicons": "^7.0.0",
     "vue": "3.5.11",
-    "vue-router": "^4.2.0"
+    "vue-router": "^4.2.0",
+    "winston": "^3.15.0",
+    "winston-syslog": "^2.7.1"
   },
   "devDependencies": {
     "@capacitor/cli": "6.1.2",

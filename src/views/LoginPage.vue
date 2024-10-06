@@ -56,7 +56,10 @@
         </ion-row>
         <ion-row>
           <ion-col size="12">
-            <ion-button expand="block" color="secondary" router-link="/register"
+            <ion-button
+              expand="block"
+              color="secondary"
+              @click="router.push('/register')"
               >Cadastre-se</ion-button
             >
           </ion-col>
@@ -85,9 +88,7 @@ import {
   IonButton,
   IonGrid,
   IonPage,
-  onIonViewDidEnter,
   toastController,
-  useIonRouter,
   loadingController,
 } from '@ionic/vue'
 import { ref } from 'vue'
@@ -96,8 +97,10 @@ import { storageService } from '@/storage'
 import { Device, DeviceInfo } from '@capacitor/device'
 import { Token } from '@/models'
 import { useApi } from '@/api'
+import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
 
-const ionRouter = useIonRouter()
+const router = useRouter()
 const getInfo = async (): Promise<DeviceInfo> => {
   const info = await Device.getInfo()
   return info
@@ -120,7 +123,7 @@ const validation = ref({
   },
 })
 
-const api = useApi(ionRouter)
+const api = useApi()
 
 const login = async () => {
   const loading = await loadingController.create({
@@ -138,7 +141,7 @@ const login = async () => {
 
     storageService.set<Token>('token', { payload: response.data.token })
 
-    ionRouter.replace('/home')
+    router.replace('/home')
 
     authStore.loginPageMessage = 'Login efetuado com sucesso!'
   } catch (error) {
@@ -177,7 +180,7 @@ const login = async () => {
   }
 }
 
-onIonViewDidEnter(async () => {
+onMounted(async () => {
   if (authStore.loginPageMessage) {
     const toast = await toastController.create({
       message: authStore.loginPageMessage,

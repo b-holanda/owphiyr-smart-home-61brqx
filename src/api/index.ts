@@ -1,17 +1,17 @@
 import axios from 'axios'
 import { storageService } from '@/storage'
 import { Token } from '@/models'
-import { UseIonRouterResult } from '@ionic/vue'
+
+import router from '@/router'
 
 const instance = axios.create({
-  baseURL: 'https://smart.owphiyr.com.br',
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
   withXSRFToken: true,
   headers: {
     common: {
       'X-Requested-With': 'XMLHttpRequest',
-      'API-BASIC':
-        'cWtFWUh1Vjk2RmM4S2J2RkdicnlKRDIyWllFZkY1YUsgICRXezJOXVdVXT1yNjgyOmpdelM2VDpnZ3p9aSpbcXFGMTBrZCx7LCh1UkxjYkZILUU2IUguP3hDWi8wZDVFKGY=',
+      'API-BASIC': import.meta.env.VITE_API_SECRET,
     },
   },
 })
@@ -25,11 +25,13 @@ storageService.has('token').then((hasToken) => {
   }
 })
 
-export const useApi = (ionRouter: UseIonRouterResult) => {
+export const useApi = () => {
   instance.interceptors.request.use(async (config) => {
+    console.debug('request', config)
+
     if (config.url === '/api/v1/users/logout') {
       storageService.remove('token')
-      ionRouter.replace({ name: 'login' })
+      router.replace({ name: 'login' })
     } else {
       if (await storageService.has('token')) {
         storageService.get<Token>('token').then((token) => {
@@ -42,18 +44,24 @@ export const useApi = (ionRouter: UseIonRouterResult) => {
   })
 
   instance.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      console.debug('response', response)
+
+      return response
+    },
     (error) => {
+      console.error('error', error)
+
       if (error?.response?.status === 401) {
         storageService.remove('token')
-        ionRouter.replace({ name: 'login' })
+        router.replace({ name: 'login' })
       }
 
       if (
         error?.response?.status === 403 &&
         error?.response?.data?.message === 'Your email address is not verified.'
       ) {
-        ionRouter.replace({ name: 'not-verified-email' })
+        router.replace({ name: 'not-verified-email' })
       }
 
       return Promise.reject(error)

@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router'
+import { createMemoryHistory, createRouter } from 'vue-router'
 import { RouteRecordRaw } from 'vue-router'
 import { authenticated, redirectIfAuthenticated } from './guards'
 
@@ -40,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createMemoryHistory(import.meta.env.BASE_URL),
   routes,
 })
 

@@ -79,7 +79,7 @@
               expand="block"
               color="tertiary"
               fill="clear"
-              @click="ionRouter.back()"
+              @click="router.back()"
               >Voltar</ion-button
             >
           </ion-col>
@@ -100,7 +100,6 @@ import {
   IonButton,
   IonGrid,
   loadingController,
-  useIonRouter,
   IonPage,
   toastController,
 } from '@ionic/vue'
@@ -108,8 +107,9 @@ import { ref } from 'vue'
 import { AxiosError } from 'axios'
 import { authStore } from '@/store/auth/auth.store'
 import { useApi } from '@/api'
+import { useRouter } from 'vue-router'
 
-const ionRouter = useIonRouter()
+const router = useRouter()
 
 const user = ref({
   name: '',
@@ -137,7 +137,7 @@ const register = async () => {
     message: 'Estamos cadastrando seu usuário...',
   })
 
-  const api = useApi(ionRouter)
+  const api = useApi()
 
   try {
     loading.present()
@@ -145,7 +145,7 @@ const register = async () => {
 
     await api.post('/api/v1/users', user.value)
 
-    ionRouter.replace('/login')
+    router.replace('/login')
 
     authStore.loginPageMessage = 'Usuário cadastrado com sucesso!'
   } catch (error) {
