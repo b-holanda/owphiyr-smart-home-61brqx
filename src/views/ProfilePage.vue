@@ -43,9 +43,10 @@ import {
 import { useApi } from '@/api'
 import { authStore } from '@/store/auth/auth.store'
 import { ref, onMounted } from 'vue'
+import { User } from '@/models'
 
 const api = useApi()
-const user = ref({})
+const user = ref<User>({ email: '', name: '' })
 
 onMounted(async () => {
   if (authStore.emailVerificationMessage) {
@@ -65,7 +66,7 @@ onMounted(async () => {
 
     const response = await api.get('/api/v1/users')
 
-    user.value = response.data.data
+    user.value = response.data.data as User
   } catch (error) {
     console.error(error)
   }

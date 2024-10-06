@@ -38,15 +38,9 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: [authenticated],
   },
   {
-    path: '/device/cipa/add',
+    path: '/device-cipa-add',
     name: 'add-cipa',
-    component: () => import('@/views/CIPAAddPage.vue'),
-    beforeEnter: [authenticated],
-  },
-  {
-    path: '/device/vigia/add',
-    name: 'add-cipa',
-    component: () => import('@/views/VigiaAddPage.vue'),
+    component: () => import('@/views/RegisterCIPAPage.vue'),
     beforeEnter: [authenticated],
   },
 ]

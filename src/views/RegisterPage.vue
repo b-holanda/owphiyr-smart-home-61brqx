@@ -108,10 +108,11 @@ import { AxiosError } from 'axios'
 import { authStore } from '@/store/auth/auth.store'
 import { useApi } from '@/api'
 import { useRouter } from 'vue-router'
+import { User } from '@/models'
 
 const router = useRouter()
 
-const user = ref({
+const user = ref<User>({
   name: '',
   email: '',
   password: '',
@@ -143,7 +144,7 @@ const register = async () => {
     loading.present()
     await api.get('/sanctum/csrf-cookie')
 
-    await api.post('/api/v1/users', user.value)
+    await api.post<User>('/api/v1/users', user.value)
 
     router.replace('/login')
 

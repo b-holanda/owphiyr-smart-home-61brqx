@@ -123,14 +123,15 @@ import { useApi } from '@/api'
 import { authStore } from '@/store/auth/auth.store'
 import { onMounted, computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { CIPA, Vigia } from '@/models'
 
 const router = useRouter()
 const api = useApi()
 const retriveCipasEndpoint = ref('/api/v1/cipas')
 const retriveVigiasEndpoint = ref('/api/v1/vigias')
 const isOpenModal = ref(false)
-const cipas = ref([])
-const vigias = ref([])
+const cipas = ref<Array<CIPA>>([])
+const vigias = ref<Array<Vigia>>([])
 const segment = ref({ cipa: true, vigia: false })
 const addSegment = ref({ cipa: true, vigia: false })
 const hasCipa = computed(() => cipas.value.length > 0)
@@ -227,10 +228,12 @@ const setOpen = (open: boolean) => (isOpenModal.value = open)
 
 const addDevice = () => {
   if (addSegment.value.cipa) {
-    router.push('/device/cipa/add')
+    router.push({ name: 'add-cipa' })
   } else {
-    router.push('/device/vigia/add')
+    router.push({ name: 'add-vigia' })
   }
+
+  setOpen(false)
 }
 </script>
 
