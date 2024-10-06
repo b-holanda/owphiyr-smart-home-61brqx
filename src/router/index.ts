@@ -37,6 +37,18 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/EmailNotVerifiedPage.vue'),
     beforeEnter: [authenticated],
   },
+  {
+    path: '/device/cipa/add',
+    name: 'add-cipa',
+    component: () => import('@/views/CIPAAddPage.vue'),
+    beforeEnter: [authenticated],
+  },
+  {
+    path: '/device/vigia/add',
+    name: 'add-cipa',
+    component: () => import('@/views/VigiaAddPage.vue'),
+    beforeEnter: [authenticated],
+  },
 ]
 
 const router = createRouter({

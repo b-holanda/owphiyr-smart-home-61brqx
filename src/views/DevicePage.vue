@@ -227,9 +227,9 @@ const setOpen = (open: boolean) => (isOpenModal.value = open)
 
 const addDevice = () => {
   if (addSegment.value.cipa) {
-    router.push('/cipa/add')
+    router.push('/device/cipa/add')
   } else {
-    router.push('/vigia/add')
+    router.push('/device/vigia/add')
   }
 }
 </script>
