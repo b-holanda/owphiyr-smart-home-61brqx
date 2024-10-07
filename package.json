@@ -13,6 +13,7 @@
     "start": "npx cap run android --target=Pixel_2_API_35 --live-reload --external --no-sync --port=8100 --host=192.168.100.56"
   },
   "dependencies": {
+    "@capacitor-community/bluetooth-le": "^6.0.1",
     "@capacitor/android": "6.1.2",
     "@capacitor/app": "6.0.1",
     "@capacitor/core": "6.1.2",

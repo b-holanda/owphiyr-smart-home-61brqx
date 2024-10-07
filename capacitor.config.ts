@@ -11,6 +11,14 @@ const config: CapacitorConfig = {
     CapacitorCookies: {
       enabled: true,
     },
+    BluetoothLe: {
+      displayStrings: {
+        scanning: 'Encontrando dispositivos...',
+        cancel: 'Cancelar',
+        availableDevices: 'Não há dispositivos disponíveis',
+        noDeviceFound: 'Nenhum dispositivo encontrado',
+      },
+    },
   },
 }
 

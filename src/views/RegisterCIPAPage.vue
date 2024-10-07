@@ -11,7 +11,7 @@
       <ion-grid>
         <ion-row>
           <ion-col size="12">
-            <ion-text>Informe seus dados de cadastro</ion-text>
+            <ion-text>Informe os dados da CIPA</ion-text>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -26,7 +26,7 @@
             ></ion-input>
           </ion-col>
         </ion-row>
-        <ion-row>
+        <ion-row class="ion-margin-botton">
           <ion-col size="12">
             <ion-input
               ref="cipaSecret"
@@ -38,11 +38,17 @@
             ></ion-input>
           </ion-col>
         </ion-row>
+        <ion-row class="ion-margin-top">
+          <ion-col size="12">
+            <ion-text>Informe os dados da sua rede Wi-fi 2.4 Ghz</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row></ion-row>
         <ion-row>
           <ion-col size="12">
             <ion-input
               ref="wifiSSID"
-              label="Nome Wi-Fi"
+              label="SSID (Nome da rede Wi-Fi)"
               label-placement="floating"
               placeholder="Nome da rede Wi-Fi"
               fill="outline"
@@ -54,7 +60,7 @@
           <ion-col size="12">
             <ion-input
               ref="WifiPassword"
-              label="Senha Wi-Fi"
+              label="Senha"
               label-placement="floating"
               placeholder="Digite a senha da rede Wi-Fi"
               type="password"
@@ -65,7 +71,15 @@
         </ion-row>
         <ion-row>
           <ion-col size="12">
-            <ion-button expand="block">Continuar</ion-button>
+            <ion-nav-link
+              router-direction="forward"
+              :component="component"
+              :component-props="{ navController }"
+            >
+              <ion-button expand="block" @click="saveDevice()"
+                >Continuar</ion-button
+              >
+            </ion-nav-link>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -85,6 +99,8 @@
 </template>
 
 <script setup lang="ts">
+import { DeviceCredentials, Wifi } from '@/models'
+import { deviceStore } from '@/store/device/device.store'
 import {
   IonPage,
   IonTitle,
@@ -97,21 +113,52 @@ import {
   IonText,
   IonButton,
   IonInput,
+  toastController,
+  IonNavLink,
 } from '@ionic/vue'
-import { ref } from 'vue'
+import { ref, onMounted, markRaw, defineProps } from 'vue'
 import { useRouter } from 'vue-router'
+import PerformEnablePage from './PerformEnablePage.vue'
+
+const { navController } = defineProps<{
+  navController: any
+}>()
 
 const router = useRouter()
 
-const cipa = ref({
+const cipa = ref<DeviceCredentials>({
   code: '',
   secret: '',
 })
 
-const wifi = ref({
+const wifi = ref<Wifi>({
   ssid: '',
   password: '',
 })
+
+const component = markRaw(PerformEnablePage)
+
+onMounted(async () => {
+  cipa.value = deviceStore.credentials
+  wifi.value = deviceStore.wifi
+
+  if (deviceStore.enableMessage) {
+    const toast = await toastController.create({
+      message: deviceStore.enableMessage,
+      duration: 5000,
+      position: 'top',
+    })
+
+    toast.present()
+
+    deviceStore.enableMessage = ''
+  }
+})
+
+const saveDevice = () => {
+  deviceStore.credentials = cipa.value
+  deviceStore.wifi = wifi.value
+}
 </script>
 
 <style scoped></style>

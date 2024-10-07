@@ -24,3 +24,13 @@ export interface Vigia {
   online: boolean
   token?: string
 }
+
+export interface DeviceCredentials {
+  code: string
+  secret: string
+}
+
+export interface Wifi {
+  ssid: string
+  password: string
+}
