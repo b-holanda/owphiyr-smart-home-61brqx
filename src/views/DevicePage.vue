@@ -228,9 +228,9 @@ const setOpen = (open: boolean) => (isOpenModal.value = open)
 
 const addDevice = () => {
   if (addSegment.value.cipa) {
-    router.push({ name: 'device-add', params: { deviceType: 'cipa' } })
+    router.push({ name: 'device-add', params: { deviceType: 'CIPA' } })
   } else {
-    router.push({ name: 'device-add', params: { deviceType: 'vigia' } })
+    router.push({ name: 'device-add', params: { deviceType: 'Vigia' } })
   }
 
   setOpen(false)

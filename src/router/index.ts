@@ -40,7 +40,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/device/:deviceType/add',
     name: 'device-add',
-    component: () => import('@/views/RegisterCIPAPage.vue'),
+    component: () => import('@/views/DeviceRegisterPage.vue'),
+    beforeEnter: [authenticated],
+  },
+  {
+    path: '/device/:deviceType/enable',
+    name: 'device-enable',
+    component: () => import('@/views/DeviceEnablePage.vue'),
     beforeEnter: [authenticated],
   },
 ]

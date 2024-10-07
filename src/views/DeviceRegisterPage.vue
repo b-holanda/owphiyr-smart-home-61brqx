@@ -3,7 +3,7 @@
     <ion-header>
       <ion-toolbar color="primary">
         <div class="ion-text-center">
-          <ion-title>Adicionar CIPA</ion-title>
+          <ion-title>Adicionar {{ route.params.deviceType }}</ion-title>
         </div>
       </ion-toolbar>
     </ion-header>
@@ -17,10 +17,9 @@
         <ion-row>
           <ion-col size="12">
             <ion-input
-              ref="cipaCode"
               label="Código"
               label-placement="floating"
-              placeholder="Código da CIPA"
+              placeholder="Código"
               fill="outline"
               v-model="cipa.code"
             ></ion-input>
@@ -29,7 +28,6 @@
         <ion-row class="ion-margin-botton">
           <ion-col size="12">
             <ion-input
-              ref="cipaSecret"
               label="Chave Secreta"
               label-placement="floating"
               placeholder="Chave secreta"
@@ -47,8 +45,7 @@
         <ion-row>
           <ion-col size="12">
             <ion-input
-              ref="wifiSSID"
-              label="SSID (Nome da rede Wi-Fi)"
+              label="Nome da rede Wi-Fi"
               label-placement="floating"
               placeholder="Nome da rede Wi-Fi"
               fill="outline"
@@ -59,7 +56,6 @@
         <ion-row>
           <ion-col size="12">
             <ion-input
-              ref="WifiPassword"
               label="Senha"
               label-placement="floating"
               placeholder="Digite a senha da rede Wi-Fi"
@@ -71,15 +67,9 @@
         </ion-row>
         <ion-row>
           <ion-col size="12">
-            <ion-nav-link
-              router-direction="forward"
-              :component="component"
-              :component-props="{ navController }"
+            <ion-button expand="block" @click="saveDevice()"
+              >Continuar</ion-button
             >
-              <ion-button expand="block" @click="saveDevice()"
-                >Continuar</ion-button
-              >
-            </ion-nav-link>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -114,17 +104,12 @@ import {
   IonButton,
   IonInput,
   toastController,
-  IonNavLink,
 } from '@ionic/vue'
-import { ref, onMounted, markRaw, defineProps } from 'vue'
-import { useRouter } from 'vue-router'
-import PerformEnablePage from './PerformEnablePage.vue'
-
-const { navController } = defineProps<{
-  navController: any
-}>()
+import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
 
 const cipa = ref<DeviceCredentials>({
   code: '',
@@ -135,8 +120,6 @@ const wifi = ref<Wifi>({
   ssid: '',
   password: '',
 })
-
-const component = markRaw(PerformEnablePage)
 
 onMounted(async () => {
   cipa.value = deviceStore.credentials
@@ -158,6 +141,8 @@ onMounted(async () => {
 const saveDevice = () => {
   deviceStore.credentials = cipa.value
   deviceStore.wifi = wifi.value
+
+  router.push(`/device/${route.params.diviceType}/enable`)
 }
 </script>
 
