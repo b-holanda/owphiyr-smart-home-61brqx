@@ -8,82 +8,100 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <ion-grid>
-        <ion-row>
-          <ion-col size="12">
-            <ion-text>Informe os dados da CIPA</ion-text>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="12">
-            <ion-input
-              label="Código"
-              label-placement="floating"
-              placeholder="Código"
-              fill="outline"
-              v-model="cipa.code"
-            ></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row class="ion-margin-botton">
-          <ion-col size="12">
-            <ion-input
-              label="Chave Secreta"
-              label-placement="floating"
-              placeholder="Chave secreta"
-              fill="outline"
-              v-model="cipa.secret"
-            ></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row class="ion-margin-top">
-          <ion-col size="12">
-            <ion-text>Informe os dados da sua rede Wi-fi 2.4 Ghz</ion-text>
-          </ion-col>
-        </ion-row>
-        <ion-row></ion-row>
-        <ion-row>
-          <ion-col size="12">
-            <ion-input
-              label="Nome da rede Wi-Fi"
-              label-placement="floating"
-              placeholder="Nome da rede Wi-Fi"
-              fill="outline"
-              v-model="wifi.ssid"
-            ></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="12">
-            <ion-input
-              label="Senha"
-              label-placement="floating"
-              placeholder="Digite a senha da rede Wi-Fi"
-              type="password"
-              fill="outline"
-              v-model="wifi.password"
-            ></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="12">
-            <ion-button expand="block" @click="saveDevice()"
-              >Continuar</ion-button
-            >
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col size="12">
-            <ion-button
-              expand="block"
-              color="tertiary"
-              fill="clear"
-              @click="router.back()"
-              >Voltar</ion-button
-            >
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      <form @submit.prevent="saveDevice()">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-text
+                >Informe os dados da {{ route.params.deviceType }}</ion-text
+              >
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <ion-input
+                label="Código"
+                label-placement="floating"
+                placeholder="Código"
+                fill="outline"
+                v-model="cipa.code"
+                :required="true"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-margin-botton">
+            <ion-col size="12">
+              <ion-input
+                label="Chave Secreta"
+                label-placement="floating"
+                placeholder="Chave secreta"
+                fill="outline"
+                v-model="cipa.secret"
+                :required="true"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-margin-botton">
+            <ion-col size="12">
+              <ion-input
+                label="Nome do dispositivo"
+                label-placement="floating"
+                placeholder="Nome do dispositivo"
+                fill="outline"
+                v-model="cipa.name"
+                :required="true"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-margin-top">
+            <ion-col size="12">
+              <ion-text>Informe os dados da sua rede Wi-fi 2.4 Ghz</ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row></ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <ion-input
+                label="Nome da rede Wi-Fi"
+                label-placement="floating"
+                placeholder="Nome da rede Wi-Fi"
+                fill="outline"
+                v-model="wifi.ssid"
+                :required="true"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <ion-input
+                label="Senha"
+                label-placement="floating"
+                placeholder="Digite a senha da rede Wi-Fi"
+                type="password"
+                fill="outline"
+                v-model="wifi.password"
+                :required="true"
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <ion-button expand="block" type="submit">Continuar</ion-button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <ion-button
+                expand="block"
+                color="tertiary"
+                fill="clear"
+                @click="router.back()"
+                >Voltar</ion-button
+              >
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
     </ion-content>
   </ion-page>
 </template>
@@ -114,6 +132,7 @@ const route = useRoute()
 const cipa = ref<DeviceCredentials>({
   code: '',
   secret: '',
+  name: '',
 })
 
 const wifi = ref<Wifi>({
@@ -142,7 +161,7 @@ const saveDevice = () => {
   deviceStore.credentials = cipa.value
   deviceStore.wifi = wifi.value
 
-  router.push(`/device/${route.params.diviceType}/enable`)
+  router.push(`/device/${route.params.deviceType}/enable`)
 }
 </script>
 

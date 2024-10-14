@@ -28,6 +28,7 @@ export interface Vigia {
 export interface DeviceCredentials {
   code: string
   secret: string
+  name: string
 }
 
 export interface Wifi {

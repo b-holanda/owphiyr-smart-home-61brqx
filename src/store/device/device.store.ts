@@ -4,6 +4,7 @@ export const deviceStore = reactive({
   credentials: {
     code: '',
     secret: '',
+    name: '',
   },
   wifi: {
     ssid: '',

@@ -29,7 +29,7 @@
         </ion-label>
         <ion-list>
           <ion-item v-for="cipa in cipas" :key="cipa.id" button>
-            <ion-label>{{ cipa.name }}</ion-label>
+            <ion-label>{{ cipa.id }}</ion-label>
           </ion-item>
         </ion-list>
         <ion-infinite-scroll @ionInfinite="ionInfiniteVigia">
