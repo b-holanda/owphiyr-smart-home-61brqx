@@ -28,11 +28,43 @@
           </p>
         </ion-label>
         <ion-list>
-          <ion-item v-for="cipa in cipas" :key="cipa.id" button>
-            <ion-label>{{ cipa.id }}</ion-label>
+          <ion-item
+            v-for="cipa in cipas"
+            :key="cipa.id"
+            button
+            class="cipa"
+            @click="cipa.door_open ? closeDoor(cipa.id) : openDoor(cipa.id)"
+          >
+            <ion-icon
+              :icon="cipa.online ? wifi : cloudOffline"
+              :color="cipa.online ? 'success' : 'danger'"
+              size="large"
+            ></ion-icon>
+            <ion-label>
+              <h3>{{ cipa.name }}</h3>
+              <p>
+                <ion-icon
+                  :icon="cipa.door_open ? lockOpen : lockClosed"
+                  :color="cipa.door_open ? 'tertiary' : 'medium'"
+                  slot="start"
+                ></ion-icon>
+                Porta: {{ cipa.door_open ? 'ABERTA' : 'FECHADA' }}
+              </p>
+              <p>
+                Status:
+                <span :class="{ online: cipa.online, offline: !cipa.online }">{{
+                  cipa.online ? 'ONLINE' : 'OFFLINE'
+                }}</span>
+              </p>
+            </ion-label>
+            <ion-icon
+              slot="end"
+              :icon="arrowForwardCircle"
+              color="primary"
+            ></ion-icon>
           </ion-item>
         </ion-list>
-        <ion-infinite-scroll @ionInfinite="ionInfiniteVigia">
+        <ion-infinite-scroll @ionInfinite="ionInfiniteCipa">
           <ion-infinite-scroll-content></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </div>
@@ -42,12 +74,7 @@
             Você ainda não possui nenhuma Vigia cadastrada.
           </p>
         </ion-label>
-        <ion-list>
-          <ion-item v-for="vigia in vigias" :key="vigia.id">
-            <ion-label>{{ vigia.name }}</ion-label>
-          </ion-item>
-        </ion-list>
-        <ion-infinite-scroll @ionInfinite="ionInfiniteCipa">
+        <ion-infinite-scroll @ionInfinite="ionInfiniteVigia">
           <ion-infinite-scroll-content></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </div>
@@ -118,7 +145,14 @@ import {
   IonRow,
   IonButton,
 } from '@ionic/vue'
-import { add } from 'ionicons/icons'
+import {
+  add,
+  wifi,
+  cloudOffline,
+  lockOpen,
+  lockClosed,
+  arrowForwardCircle,
+} from 'ionicons/icons'
 import { useApi } from '@/api'
 import { authStore } from '@/store/auth/auth.store'
 import { onMounted, computed, ref } from 'vue'
@@ -154,10 +188,12 @@ onMounted(async () => {
   loadVigias()
 })
 
-const loadCipas = async () => {
+const loadCipas = async (endpoint?: string) => {
   await api.get('/sanctum/csrf-cookie')
 
-  const response = await api.get(retriveCipasEndpoint.value)
+  const response = await api.get(
+    endpoint ? endpoint : retriveCipasEndpoint.value
+  )
 
   if (response?.data) {
     cipas.value = response.data.data
@@ -174,6 +210,22 @@ const loadVigias = async () => {
     vigias.value = response.data.data
     retriveVigiasEndpoint.value = response.data.links.next
   }
+}
+
+const closeDoor = async (id: number) => {
+  await api.get('/sanctum/csrf-cookie')
+
+  await api.patch(`/api/v1/cipas/${id}/close-door`)
+
+  loadCipas('/api/v1/cipas')
+}
+
+const openDoor = async (id: number) => {
+  await api.get('/sanctum/csrf-cookie')
+
+  await api.patch(`/api/v1/cipas/${id}/open-door`)
+
+  loadCipas('/api/v1/cipas')
 }
 
 const changeSegment = () => {
@@ -245,5 +297,41 @@ const addDevice = () => {
 
 .modal-control {
   display: flex;
+}
+
+.cipa {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.cipa ion-label {
+  width: fit-content;
+  text-align: left;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: var(--ion-color-dark);
+}
+
+.online {
+  color: var(--ion-color-success) !important;
+}
+
+.offline {
+  color: var(--ion-color-danger) !important;
+}
+
+ion-icon {
+  padding: 10px;
+}
+
+ion-icon[slot='start'] {
+  padding: 0;
+}
+
+ion-icon[slot='end'] {
+  font-size: 2rem;
+  padding: 0;
 }
 </style>

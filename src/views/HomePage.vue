@@ -55,14 +55,17 @@ onMounted(async () => {
 
     authStore.emailVerificationMessage = ''
   }
-  const tab = await tabs.value.$el.getTab('things')
+
+  //eslint-disable-next-line
+  // @ts-ignore
+  const tab = await tabs.value?.$el.getTab('things')
 
   await tab.setActive()
 
   setTimeout(() => {
-    document.getElementById('tabBtnUser').classList.remove('tab-selected')
-    document.getElementById('tabBtnThings').classList.add('tab-selected')
-    document.getElementById('tabBtnThings').dispatchEvent(new Event('click'))
+    document.getElementById('tabBtnUser')?.classList.remove('tab-selected')
+    document.getElementById('tabBtnThings')?.classList.add('tab-selected')
+    document.getElementById('tabBtnThings')?.dispatchEvent(new Event('click'))
   }, 10)
 })
 </script>
