@@ -1,40 +1,16 @@
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { RouteRecordRaw } from 'vue-router'
-import { authenticated, redirectIfAuthenticated } from './guards'
+import { authenticated } from './guards'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/login',
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/LoginPage.vue'),
-    beforeEnter: [redirectIfAuthenticated],
-  },
-  {
-    path: '/register',
-    name: 'register',
-    component: () => import('@/views/RegisterPage.vue'),
-    beforeEnter: [redirectIfAuthenticated],
+    redirect: '/home',
   },
   {
     path: '/home',
     name: 'home',
     component: () => import('@/views/HomePage.vue'),
-    beforeEnter: [authenticated],
-  },
-  {
-    path: '/verify-email/:token',
-    name: 'verify-email',
-    component: () => import('@/views/EmailVerificationPage.vue'),
-    beforeEnter: [authenticated],
-  },
-  {
-    path: '/not-verified-email',
-    name: 'not-verified-email',
-    component: () => import('@/views/EmailNotVerifiedPage.vue'),
     beforeEnter: [authenticated],
   },
   {
@@ -48,6 +24,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'device-enable',
     component: () => import('@/views/DeviceEnablePage.vue'),
     beforeEnter: [authenticated],
+  },
+  {
+    path: '/oauth/callback',
+    name: 'oauth-callback',
+    component: () => import('@/views/OAuthCallbackPage.vue'),
   },
 ]
 

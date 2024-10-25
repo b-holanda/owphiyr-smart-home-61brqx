@@ -33,7 +33,11 @@
             :key="cipa.id"
             button
             class="cipa"
-            @click="cipa.door_open ? closeDoor(cipa.id) : openDoor(cipa.id)"
+            @click="
+              cipa.door_open && cipa.online
+                ? closeDoor(cipa.id)
+                : openDoor(cipa.id)
+            "
           >
             <ion-icon
               :icon="cipa.online ? wifi : cloudOffline"

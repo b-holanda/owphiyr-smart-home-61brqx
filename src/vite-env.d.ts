@@ -10,6 +10,8 @@ interface ImportMetaEnv {
   readonly VITE_BLE_DEVICE_CHARACTERISTIC_UUID_CHANGE_APP_STATE: string
   readonly VITE_BLE_DEVICE_CHARACTERISTIC_UUID_REBOOT: string
   readonly VITE_BLE_DEVICE_CHARACTERISTIC_UUID_API_SECRET: string
+  readonly VITE_API_CLIENT_ID: string
+  readonly VITE_API_CLIENT_SECRET: string
 }
 
 interface ImportMeta {

@@ -43,18 +43,25 @@ router.isReady().then(() => {
 })
 
 App.addListener('appUrlOpen', function (event: URLOpenListenerEvent) {
-  console.debug('event', event)
+  const path = new URL(event.url).pathname
+  const search = new URL(event.url).search
 
-  const urlParams = new URL(event.url).searchParams
-  const token = urlParams.get('verify_url')
+  if (path) {
+    console.debug('Redirecting to:', `${path}`)
+    console.debug('Search :', `${search}`)
 
-  console.debug('token', token)
+    const query = search
+      ?.replaceAll('?', '')
+      .split('&')
+      .map((q) => {
+        const [key, value] = q.split('=')
+        return { [key]: value }
+      })
+      .reduce((acc, curr) => {
+        return { ...acc, ...curr }
+      }, {})
 
-  if (token) {
-    console.debug('Redirecting to:', `/verify-email/${token}`)
-    router.push({
-      path: `/verify-email/${token}`,
-    })
+    router.push({ path, query })
   }
 })
 
